@@ -13,3 +13,9 @@ class RecordTrack(BaseModel):
 class LockTrack(BaseModel):
     model_config = ConfigDict(extra="forbid")
     track: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=160)]
+
+
+class LabelGroup(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    track: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=160)]
+    group: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=64)]

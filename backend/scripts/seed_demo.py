@@ -8,8 +8,9 @@ def seed():
     sizes = {}
     with transaction() as conn:
         for table, rows in FIXTURES:
+            key = next(iter(table.primary_key.columns))
             for row in rows:
-                present = conn.scalar(select(table.c.code).where(table.c.code == row['code']))
+                present = conn.scalar(select(key).where(key == row[key.name]))
                 if present is None:
                     conn.execute(table.insert().values(**row))
             sizes[table.name] = conn.scalar(select(func.count()).select_from(table))

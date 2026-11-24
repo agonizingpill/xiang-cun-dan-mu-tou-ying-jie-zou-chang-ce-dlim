@@ -3,7 +3,8 @@ import {display, el} from './dom.js';
 export function status(message, variant = '') {
   return el('p', {class:'status ' + variant, role:'status'}, message);
 }
-export function dataView(rows, columns, layout) {
+export function dataView(value, columns, layout) {
+  const rows = Array.isArray(value) ? value : [value];
   if (!rows.length) return status('暂无可用记录。可先填入一条领域凭证。');
   if (layout === 'table') {
     return el('div', {class:'scroll'}, el('table', {},

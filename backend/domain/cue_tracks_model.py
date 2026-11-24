@@ -10,3 +10,8 @@ cue_tracks = Table('cue_tracks', metadata,
     Column('shift', Float, nullable=False),
     Column('locked', Boolean, nullable=False),
 )
+
+cue_track_groups = Table('cue_track_groups', metadata,
+    Column('track', String(160), ForeignKey('cue_tracks.code'), primary_key=True),
+    Column('group', String(64), nullable=False),
+)

@@ -72,3 +72,6 @@ label span { display:block; color:var(--soft); font-size:.875em }
 .top {border-bottom:7px solid var(--accent)}
 .shell {display:block} nav {flex-direction:row; border-bottom:1px solid var(--line)}
 .status.ok {color:oklch(80% .13 151)} .status.error {color:oklch(84% .11 25)}
+
+.extras { padding:clamp(1rem,3vw,3rem); padding-top:0 }
+.extras .ledger + .ledger { margin-top:1rem }

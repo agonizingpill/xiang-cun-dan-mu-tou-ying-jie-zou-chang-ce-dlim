@@ -27,6 +27,10 @@
     {
       "name": "locked",
       "label": "模板已见证"
+    },
+    {
+      "name": "group",
+      "label": "节奏组"
     }
   ],
   "layout": "stack",
@@ -89,6 +93,30 @@
         }
       ],
       "help": "核对现场见证后锁定序列。",
+      "roles": [
+        "reviewer"
+      ],
+      "success": "已写入"
+    },
+    {
+      "name": "label_group",
+      "label": "标节奏组",
+      "path": "/cue_tracks/label-group",
+      "fields": [
+        {
+          "name": "track",
+          "label": "见证拍点",
+          "kind": "text",
+          "initial": "CUE-FINAL"
+        },
+        {
+          "name": "group",
+          "label": "节奏组",
+          "kind": "text",
+          "initial": "RHYTHM-A"
+        }
+      ],
+      "help": "为已见证拍点标上节奏组，规则验收用组别判定错配。",
       "roles": [
         "reviewer"
       ],

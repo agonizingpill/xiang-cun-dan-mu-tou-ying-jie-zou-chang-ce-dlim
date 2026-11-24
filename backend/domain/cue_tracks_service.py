@@ -1,11 +1,8 @@
 from sqlalchemy import select
 
-from core.queueing import submit, result
-from core.records import get, insert, need, scan, update
+from core.records import get, insert, need, update
 from domain.venues_model import venues
-from domain.cue_tracks_model import cue_tracks
-from domain.cue_clusters_model import cue_clusters
-from domain.cue_routing_model import cue_routing
+from domain.cue_tracks_model import cue_tracks, cue_track_groups
 
 
 def record_track(conn, user, data):
@@ -21,3 +18,16 @@ def record_track(conn, user, data):
 def lock_track(conn, user, data):
     get(conn,cue_tracks,data.track,lock=True)
     return update(conn,cue_tracks,data.track,locked=True)
+
+
+def label_group(conn, user, data):
+    track=get(conn,cue_tracks,data.track,lock=True)
+    need(track['locked'],'只有已见证的拍点才能标节奏组')
+    marked=conn.execute(select(cue_track_groups.c.track)
+                        .where(cue_track_groups.c.track==data.track)).first()
+    if marked is None:
+        conn.execute(cue_track_groups.insert().values(track=data.track,group=data.group))
+    else:
+        conn.execute(cue_track_groups.update().where(cue_track_groups.c.track==data.track)
+                     .values(group=data.group))
+    return {'code':data.track,'track':data.track,'group':data.group,'locked':track['locked']}

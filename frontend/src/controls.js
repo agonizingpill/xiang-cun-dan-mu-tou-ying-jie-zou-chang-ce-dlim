@@ -25,6 +25,7 @@ function parse(form, fields) {
 export function actionForm(action, refresh) {
   const notice = status('');
   const button = el('button', {type:'submit'}, action.label);
+  const summarize = (value, fallback) => action.summarize ? action.summarize(value) : fallback(value);
   const form = el('form', {class:'action', id:action.name},
     el('h3',{},action.label), el('p',{},action.help),
     el('div',{class:'fields'},action.fields.map(field => el('label',{},
@@ -42,9 +43,9 @@ export function actionForm(action, refresh) {
           notice.textContent = COMPUTE_STATES[current.status] || current.status;
         });
         if (result.status === 'rejected') throw new Error(result.detail);
-        notice.textContent = '任务 ' + data.token + ' · ' + display(result.result);
+        notice.textContent = '任务 ' + data.token + ' · ' + summarize(result.result, display);
       } else {
-        notice.textContent = action.success + ' · ' + display(data.code ?? data.status);
+        notice.textContent = action.success + ' · ' + summarize(data, value => display(value.code ?? value.status));
       }
       notice.classList.add('ok');
       await refresh();
